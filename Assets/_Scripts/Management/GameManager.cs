@@ -2,11 +2,12 @@ using UnityEngine;
 
 namespace Aircraft.Managers
 {
-    [RequireComponent(typeof(UIManager))]
+    [RequireComponent(typeof(UIManager),typeof(LevelManager))]
     public class GameManager : Singleton<GameManager>
     {
         public GameState CurrentState { get; private set; }
 
+        public float CurrentCheckpoint { get; private set; }
 
         public GameObject Player
         {
@@ -15,6 +16,22 @@ namespace Aircraft.Managers
         }
         [SerializeField] private GameObject player;
 
+        private UIManager _uiManager;
+        private LevelManager _levelManager;
+
+        protected override void Awake()
+        {
+            base.Awake();
+            _uiManager = GetComponent<UIManager>();
+            _levelManager = GetComponent<LevelManager>();
+        }
+        private void Start()
+        {
+            CurrentCheckpoint = 0;
+        }
+
+
+        #region Game States
         public void ChangeState(GameState newState)
         {
             if (CurrentState == newState) return;
@@ -60,6 +77,13 @@ namespace Aircraft.Managers
         private void GameLostState()
         {
             throw new System.NotImplementedException();
+        }
+        #endregion
+        public void HitCheckpoint()
+        {
+            CurrentCheckpoint++;
+            _levelManager.NextCheckpoint();
+            _uiManager.NextCheckpoint();
         }
     }
     public enum GameState

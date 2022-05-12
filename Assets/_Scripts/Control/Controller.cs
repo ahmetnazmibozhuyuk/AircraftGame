@@ -1,32 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.InputSystem;
 using Aircraft.Managers;
 
 namespace Aircraft.Control
 {
-    [RequireComponent(typeof(Rigidbody))]
+    [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
     public class Controller : MonoBehaviour
     {
-        [SerializeField] private float turnRate;
+        [SerializeField] private float acceleratiionMultiplier;
+
+        [SerializeField] private float maxSpeed;
+
+        [SerializeField] private Slider accelerator;
 
         private Rigidbody _rigidbody;
+        private PlayerInput _input;
 
-        private Vector3 _hitDownPosition;
-        private Vector3 _offset;
-
-
+        private Vector3 _rotateVector;
+        private Vector3 _forwardSpeed;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _input = GetComponent<PlayerInput>();
         }
 
         private void Update()
         {
-            AssignRotation();
-            transform.localPosition += 10 * Time.deltaTime * transform.forward;
-
+            AssignPositionRotation();
         }
         private void FixedUpdate()
         {
@@ -35,30 +37,15 @@ namespace Aircraft.Control
 
         private void SetControl()
         {
-            _offset = Vector3.zero;
-            if (Input.GetMouseButtonDown(0))
-            {
-                _hitDownPosition = Input.mousePosition;
-                _offset = Vector3.zero;
-            }
-            else if (Input.GetMouseButton(0))
-            {
-                _offset = Vector3.ClampMagnitude((Input.mousePosition - _hitDownPosition), 20)*0.01f;
-            }
-            else if (Input.GetMouseButtonUp(0))
-            {
-                _offset = Vector3.zero;
-
-
-            }
+            _forwardSpeed = accelerator.value * acceleratiionMultiplier * Time.deltaTime * transform.forward;
+            _rotateVector = _input.actions["Rotate"].ReadValue<Vector2>();
         }
 
-
-
-
-        private void AssignRotation()
+        private void AssignPositionRotation()
         {
-            _rigidbody.AddRelativeTorque(new Vector3(-_offset.y,0,-_offset.x),ForceMode.VelocityChange);
+            _rigidbody.AddRelativeTorque(new Vector3(-_rotateVector.y, _rotateVector.x, _rotateVector.x));
+            _rigidbody.MovePosition(transform.position + _forwardSpeed);
+            //_rigidbody.AddRelativeForce(_forwardSpeed);
         }
     }
 }

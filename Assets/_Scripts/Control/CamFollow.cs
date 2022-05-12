@@ -10,7 +10,7 @@ namespace Aircraft.Control
         [Tooltip("Higher the value is, lower the delay will be.")]
         [SerializeField] private float cameraRotationDelay = 1;
 
-        private void Update()
+        private void FixedUpdate()
         {
             transform.SetPositionAndRotation(
                 Vector3.Lerp(transform.position,GameManager.instance.Player.transform.position,Time.deltaTime*cameraPositionDelay), 
