@@ -13,7 +13,7 @@ namespace Aircraft.Control
     [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
     public class Controller : MonoBehaviour
     {
-        [SerializeField] private float acceleratiionMultiplier;
+        [SerializeField] private float accelerationMultiplier;
 
         [SerializeField] private float maxSpeed;
 
@@ -26,6 +26,8 @@ namespace Aircraft.Control
         private Vector3 _forwardSpeed;
 
         private bool _isInSafeZone = true;
+
+        private float _throttle;
 
         private void Awake()
         {
@@ -46,7 +48,9 @@ namespace Aircraft.Control
 
         private void SetControl()
         {
-            _forwardSpeed = accelerator.value * acceleratiionMultiplier * Time.deltaTime * transform.forward;
+            //ivme kazanma ve kaybetme değerleri için branch at
+            _throttle = Mathf.Lerp(_throttle, accelerator.value, Time.deltaTime * 0.2f);
+            _forwardSpeed = _throttle * accelerationMultiplier * Time.deltaTime * transform.forward;
             _rigidbody.drag = accelerator.value * 5;
             _rotateVector = _input.actions["Rotate"].ReadValue<Vector2>();
         }

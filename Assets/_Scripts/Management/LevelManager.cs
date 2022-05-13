@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,6 +16,7 @@ namespace Aircraft.Managers
         {
             //checkpoint[0].SetActive(true);
         }
+        // tüm checkpointlerin olduğu empty grup alınacak; tüm elemanlar disable edilip sadece o anki checkpoint enable edilecek.
 
         public void NextCheckpoint()
         {
