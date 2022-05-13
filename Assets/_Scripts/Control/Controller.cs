@@ -17,6 +17,12 @@ namespace Aircraft.Control
 
         [SerializeField] private Slider accelerator;
 
+        [SerializeField] private ParticleSystem leftEngineParticle;
+        [SerializeField] private ParticleSystem rightEngineParticle;
+
+        private ParticleSystem.MainModule _leftEngine;
+        private ParticleSystem.MainModule _rightEngine;
+
         private Rigidbody _rigidbody;
         private PlayerInput _input;
 
@@ -31,6 +37,10 @@ namespace Aircraft.Control
         {
             _rigidbody = GetComponent<Rigidbody>();
             _input = GetComponent<PlayerInput>();
+
+            _leftEngine = leftEngineParticle.main;
+            _rightEngine = rightEngineParticle.main;
+
         }
 
         private void Update()
@@ -47,7 +57,12 @@ namespace Aircraft.Control
         private void SetControl()
         {
             //ivme kazanma ve kaybetme değerleri için branch at
+
+            _leftEngine.startLifetime = accelerator.value;
+            _rightEngine.startLifetime = accelerator.value;
+
             _throttle = Mathf.Lerp(_throttle, accelerator.value, Time.deltaTime * 0.2f);
+
             _forwardSpeed = _throttle * accelerationMultiplier * Time.deltaTime * transform.forward;
             _rigidbody.drag = accelerator.value * 5;
             _rotateVector = _input.actions["Rotate"].ReadValue<Vector2>();
@@ -64,8 +79,6 @@ namespace Aircraft.Control
 
             _rigidbody.MovePosition(transform.position + _forwardSpeed);
 
-
-            //_rigidbody.AddRelativeForce(_forwardSpeed,ForceMode.Force);
         }
         private void OnCollisionEnter(Collision collision)
         {
@@ -107,8 +120,6 @@ namespace Aircraft.Control
             _rigidbody.angularDrag = 0;
             GameManager.instance.ChangeState(GameState.GameLost);
         }
-
-
         public void IsItInSafeZone(bool inZone)
         {
             _isInSafeZone = inZone;
