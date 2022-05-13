@@ -1,12 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Aircraft.Managers
 {
     public class LevelManager : MonoBehaviour
     {
-        [SerializeField] private GameObject[] checkpoint;
+        [SerializeField] private Transform checkpointParent;
+        [SerializeField] private Transform landingTransform;
+        private GameObject[] _checkpoint;
+
+        private string _currentScene;
+
+        private float _distanceFromObjective;
+
+        private float _elapsedTime;
+        private readonly float _timeInterval = 2;
 
         private void Awake()
         {
@@ -14,25 +22,62 @@ namespace Aircraft.Managers
         }
         private void Start()
         {
-            //checkpoint[0].SetActive(true);
+            InitializeCheckpoints();
         }
-        // tüm checkpointlerin olduğu empty grup alınacak; tüm elemanlar disable edilip sadece o anki checkpoint enable edilecek.
-
-        public void NextCheckpoint()
+        private void Update()
         {
-            checkpoint[GameManager.instance.CurrentCheckpoint-1].SetActive(false);
+            CheckObjectiveDistance(); // Distance operation is expensive so this method is called every other second.
+        }
+        private void CheckObjectiveDistance()
+        {
+            _elapsedTime += Time.deltaTime;
+            if (_elapsedTime < _timeInterval) return;
 
-            if (GameManager.instance.CurrentCheckpoint < checkpoint.Length)
+            _elapsedTime = 0;
+            _distanceFromObjective = Vector3.Distance(GameManager.instance.Player.transform.position, GameManager.instance.CurrentTargetTransform.position);
+            if(_distanceFromObjective > 700)
             {
-                checkpoint[GameManager.instance.CurrentCheckpoint].SetActive(true);
+                GameManager.instance.OutsideRange();
             }
             else
             {
-                Debug.Log("Current Checkpoint = "+GameManager.instance.CurrentCheckpoint+", READY TO FINISH THE GAME!"+"Checkpoint Length = "+checkpoint.Length);
-                GameManager.instance.AllObjectivesAreCompleted();
+                GameManager.instance.InsideRange();
             }
-
+            Debug.Log(_distanceFromObjective);
         }
+
+        public void NextCheckpoint()
+        {
+            _checkpoint[GameManager.instance.CurrentCheckpointIndex-1].SetActive(false);
+
+            if (GameManager.instance.CurrentCheckpointIndex < _checkpoint.Length)
+            {
+                _checkpoint[GameManager.instance.CurrentCheckpointIndex].SetActive(true);
+                GameManager.instance.AssignCurrentTarget(_checkpoint[GameManager.instance.CurrentCheckpointIndex].transform);
+            }
+            else
+            {
+                GameManager.instance.AllObjectivesAreCompleted();
+                GameManager.instance.AssignCurrentTarget(landingTransform);
+            }
+        }
+        private void InitializeCheckpoints()
+        {
+            _checkpoint = new GameObject[checkpointParent.childCount];
+            for (int i = 0; i < _checkpoint.Length; i++)
+            {
+                _checkpoint[i] = checkpointParent.GetChild(i).gameObject;
+                _checkpoint[i].SetActive(false);
+            }
+            _currentScene = SceneManager.GetActiveScene().name;
+            _checkpoint[0].SetActive(true);
+            GameManager.instance.AssignCurrentTarget(_checkpoint[0].transform);
+        }
+        public void RestartLevel()
+        {
+            SceneManager.LoadScene(_currentScene);
+        }
+
 
     }
 }

@@ -1,21 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Aircraft.Managers;
 
 namespace Aircraft
 {
     public class CheckpointMiss : MonoBehaviour
     {
-        // Start is called before the first frame update
-        void Start()
+        private readonly float _rotationSpeed = 60;
+        private void Update()
         {
-        
+            transform.Rotate(-Vector3.forward, _rotationSpeed * Time.deltaTime);
         }
-
-        // Update is called once per frame
-        void Update()
+        private void OnTriggerEnter(Collider other)
         {
-        
+            if (other.CompareTag("Player"))
+            {
+                GameManager.instance.MissCheckpoint();
+            }
         }
     }
 }

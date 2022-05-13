@@ -7,8 +7,8 @@ namespace Aircraft.Managers
     {
         public GameState CurrentState { get; private set; }
 
-        public int CurrentCheckpoint { get; private set; }
-
+        public int CurrentCheckpointIndex { get; private set; }
+        public Transform CurrentTargetTransform { get; private set; }
 
         public bool AllObjectivesComplete { get; private set; }
         public GameObject Player
@@ -29,7 +29,7 @@ namespace Aircraft.Managers
         }
         private void Start()
         {
-            CurrentCheckpoint = 0;
+            CurrentCheckpointIndex = 0;
             ChangeState(GameState.GameStarted);
         }
 
@@ -47,9 +47,6 @@ namespace Aircraft.Managers
                     break;
                 case GameState.GameStarted:
                     GameStartedState();
-                    break;
-                case GameState.GameCheckingResults:
-                    GameCheckingResultsState();
                     break;
                 case GameState.GameWon:
                     GameWonState();
@@ -69,28 +66,46 @@ namespace Aircraft.Managers
         {
             //throw new System.NotImplementedException();
         }
-        private void GameCheckingResultsState()
-        {
-            //throw new System.NotImplementedException();
-        }
         private void GameWonState()
         {
             //throw new System.NotImplementedException();
+            _uiManager.GameWon();
         }
         private void GameLostState()
         {
             //throw new System.NotImplementedException();
+            _uiManager.GameLost();
         }
         #endregion
         public void HitCheckpoint()
         {
-            CurrentCheckpoint++;
+            CurrentCheckpointIndex++;
             _levelManager.NextCheckpoint();
             _uiManager.NextCheckpoint();
+        }
+        public void MissCheckpoint()
+        {
+            CurrentCheckpointIndex++;
+            _levelManager.NextCheckpoint();
+            _uiManager.NextCheckpoint();
+            Debug.Log("checkpoint deadzone missed; deducing points");
+        }
+        public void AssignCurrentTarget(Transform target)
+        {
+            CurrentTargetTransform = target;
         }
         public void AllObjectivesAreCompleted()
         {
             AllObjectivesComplete = true;
+            _uiManager.AllObjectivesCompleted();
+        }
+        public void OutsideRange()
+        {
+
+        }
+        public void InsideRange()
+        {
+
         }
     }
     public enum GameState
@@ -98,8 +113,7 @@ namespace Aircraft.Managers
         GamePreStart = 0,
         GameAwaitingStart = 1,
         GameStarted = 2,
-        GameCheckingResults = 3,
-        GameWon = 4,
-        GameLost = 5,
+        GameWon = 3,
+        GameLost = 4,
     }
 }
