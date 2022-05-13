@@ -7,7 +7,7 @@ namespace Aircraft.Managers
     {
         public GameState CurrentState { get; private set; }
 
-        public float CurrentCheckpoint { get; private set; }
+        public int CurrentCheckpoint { get; private set; }
 
         public GameObject Player
         {

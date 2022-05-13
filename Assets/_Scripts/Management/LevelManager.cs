@@ -8,10 +8,6 @@ namespace Aircraft.Managers
     {
         [SerializeField] private GameObject[] checkpoint;
 
-
-
-        private int _currentCheckpointIndex = 0;
-
         private void Awake()
         {
             
@@ -23,13 +19,17 @@ namespace Aircraft.Managers
 
         public void NextCheckpoint()
         {
-            checkpoint[_currentCheckpointIndex-1].SetActive(false);
+            checkpoint[GameManager.instance.CurrentCheckpoint-1].SetActive(false);
 
-            if (_currentCheckpointIndex > checkpoint.Length - 1)
+            if (GameManager.instance.CurrentCheckpoint < checkpoint.Length)
             {
-
+                checkpoint[GameManager.instance.CurrentCheckpoint].SetActive(true);
             }
-            checkpoint[_currentCheckpointIndex].SetActive(true);
+            else
+            {
+                Debug.Log("Current Checkpoint = "+GameManager.instance.CurrentCheckpoint+", READY TO FINISH THE GAME!"+"Checkpoint Length = "+checkpoint.Length);
+            }
+
         }
 
     }

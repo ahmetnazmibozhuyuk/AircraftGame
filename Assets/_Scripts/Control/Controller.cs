@@ -45,7 +45,13 @@ namespace Aircraft.Control
         {
             _rigidbody.AddRelativeTorque(new Vector3(-_rotateVector.y, _rotateVector.x, _rotateVector.x));
             _rigidbody.MovePosition(transform.position + _forwardSpeed);
-            //_rigidbody.AddRelativeForce(_forwardSpeed);
+
+            if(_rotateVector == Vector3.zero)
+            {
+                _rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation, 
+                    Quaternion.LookRotation(transform.forward,Vector3.up), 100 * Time.deltaTime * 1));
+            }
+            //_rigidbody.AddForce(_forwardSpeed);
         }
     }
 }
