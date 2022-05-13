@@ -15,8 +15,6 @@ namespace Aircraft.Control
     {
         [SerializeField] private float accelerationMultiplier;
 
-        [SerializeField] private float maxSpeed;
-
         [SerializeField] private Slider accelerator;
 
         private Rigidbody _rigidbody;
