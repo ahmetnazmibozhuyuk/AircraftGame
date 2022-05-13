@@ -47,6 +47,7 @@ namespace Aircraft.Control
         {
             if (GameManager.instance.CurrentState != GameState.GameStarted) return;
             AssignPositionRotation();
+            Debug.Log(_rigidbody.velocity);
         }
         private void FixedUpdate()
         {
