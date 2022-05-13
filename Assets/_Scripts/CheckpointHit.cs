@@ -10,6 +10,7 @@ namespace Aircraft.Interactable
             if (other.CompareTag("Player"))
             {
                 GameManager.instance.HitCheckpoint();
+                
                 //Destroy(gameObject);
             }
         }

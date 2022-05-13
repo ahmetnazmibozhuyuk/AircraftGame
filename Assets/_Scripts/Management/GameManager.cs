@@ -9,6 +9,8 @@ namespace Aircraft.Managers
 
         public int CurrentCheckpoint { get; private set; }
 
+
+        public bool AllObjectivesComplete { get; private set; }
         public GameObject Player
         {
             get { return player; }
@@ -28,6 +30,7 @@ namespace Aircraft.Managers
         private void Start()
         {
             CurrentCheckpoint = 0;
+            ChangeState(GameState.GameStarted);
         }
 
 
@@ -60,23 +63,23 @@ namespace Aircraft.Managers
         }
         private void GameAwaitingStartState()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         private void GameStartedState()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         private void GameCheckingResultsState()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         private void GameWonState()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         private void GameLostState()
         {
-            throw new System.NotImplementedException();
+            //throw new System.NotImplementedException();
         }
         #endregion
         public void HitCheckpoint()
@@ -84,6 +87,10 @@ namespace Aircraft.Managers
             CurrentCheckpoint++;
             _levelManager.NextCheckpoint();
             _uiManager.NextCheckpoint();
+        }
+        public void AllObjectivesAreCompleted()
+        {
+            AllObjectivesComplete = true;
         }
     }
     public enum GameState

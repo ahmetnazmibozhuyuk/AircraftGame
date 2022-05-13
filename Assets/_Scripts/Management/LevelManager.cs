@@ -28,6 +28,7 @@ namespace Aircraft.Managers
             else
             {
                 Debug.Log("Current Checkpoint = "+GameManager.instance.CurrentCheckpoint+", READY TO FINISH THE GAME!"+"Checkpoint Length = "+checkpoint.Length);
+                GameManager.instance.AllObjectivesAreCompleted();
             }
 
         }
