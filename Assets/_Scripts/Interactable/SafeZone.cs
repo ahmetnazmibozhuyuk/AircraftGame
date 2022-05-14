@@ -1,5 +1,4 @@
 using UnityEngine;
-using Aircraft.Control;
 using Aircraft.Managers;
 
 namespace Aircraft.Interactable

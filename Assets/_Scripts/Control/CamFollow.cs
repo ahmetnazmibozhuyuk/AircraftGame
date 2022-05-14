@@ -12,6 +12,8 @@ namespace Aircraft.Control
 
         private void FixedUpdate()
         {
+            if (GameManager.instance.PlayerObject == null) return;
+
             transform.SetPositionAndRotation(
                 Vector3.Lerp(transform.position,GameManager.instance.PlayerObject.transform.position,Time.deltaTime*cameraPositionDelay), 
                 Quaternion.Lerp(transform.rotation, GameManager.instance.PlayerObject.transform.rotation, Time.deltaTime*cameraRotationDelay)

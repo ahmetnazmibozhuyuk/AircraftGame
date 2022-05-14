@@ -5,10 +5,13 @@ namespace Aircraft.Managers
 {
     public class LevelManager : MonoBehaviour
     {
-        [SerializeField] private Transform checkpointParent;
+
+
         [SerializeField] private Transform landingTransform;
 
         [SerializeField] private float maxDistanceFromTarget;
+
+        private Transform _checkpointParent;
 
         private GameObject[] _checkpoint;
 
@@ -19,16 +22,33 @@ namespace Aircraft.Managers
         private float _elapsedTime;
         private readonly float _timeInterval = 2;
 
-        private void Start()
-        {
-            InitializeCheckpoints();
-        }
+
         private void Update()
         {
             CheckObjectiveDistance(); // Distance operation is expensive so this method is called every other second.
         }
+        public void InitializeCheckpoints(Transform checkpointParent)
+        {
+            _checkpointParent = checkpointParent;
+            _checkpointParent.gameObject.SetActive(true);
+            _checkpoint = new GameObject[_checkpointParent.childCount];
+            for (int i = 0; i < _checkpoint.Length; i++)
+            {
+                _checkpoint[i] = _checkpointParent.GetChild(i).gameObject;
+                _checkpoint[i].SetActive(false);
+            }
+            _currentScene = SceneManager.GetActiveScene().name;
+            _checkpoint[0].SetActive(true);
+            GameManager.instance.AssignCurrentTarget(_checkpoint[0].transform);
+        }
+        public void RestartLevel()
+        {
+            SceneManager.LoadScene(_currentScene);
+        }
         private void CheckObjectiveDistance()
         {
+            if (GameManager.instance.CurrentState != GameState.GameStarted) return;
+
             _elapsedTime += Time.deltaTime;
             if (_elapsedTime < _timeInterval) return;
 
@@ -59,22 +79,7 @@ namespace Aircraft.Managers
                 GameManager.instance.AssignCurrentTarget(landingTransform);
             }
         }
-        private void InitializeCheckpoints()
-        {
-            _checkpoint = new GameObject[checkpointParent.childCount];
-            for (int i = 0; i < _checkpoint.Length; i++)
-            {
-                _checkpoint[i] = checkpointParent.GetChild(i).gameObject;
-                _checkpoint[i].SetActive(false);
-            }
-            _currentScene = SceneManager.GetActiveScene().name;
-            _checkpoint[0].SetActive(true);
-            GameManager.instance.AssignCurrentTarget(_checkpoint[0].transform);
-        }
-        public void RestartLevel()
-        {
-            SceneManager.LoadScene(_currentScene);
-        }
+
 
 
     }

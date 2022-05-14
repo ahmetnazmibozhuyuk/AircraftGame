@@ -1,11 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 namespace Aircraft.Managers
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField] private GameObject gameStateTextObj;
         [SerializeField] private TextMeshProUGUI gameStateText;
 
         [SerializeField] private GameObject outsideRangeWarning;
@@ -14,26 +14,44 @@ namespace Aircraft.Managers
 
         [SerializeField] private TextMeshProUGUI scoreText;
 
+        [SerializeField] private TMP_Dropdown aircraftSelectMenu;
+        [SerializeField] private TMP_Dropdown courseSelectMenu;
+
+        [SerializeField] private GameObject startButton;
+
         public void UpdateScore()
         {
-            scoreText.SetText("Score: "+GameManager.instance.Score.ToString());
+            scoreText.SetText("Score: " + GameManager.instance.Score.ToString());
+        }
+
+        public void SelectAndStart()
+        {
+                GameManager.instance.InitializeGame(courseSelectMenu.value, aircraftSelectMenu.value);
+        }
+        public void GameStarted()
+        {
+            aircraftSelectMenu.gameObject.SetActive(false);
+            courseSelectMenu.gameObject.SetActive(false);
+            startButton.SetActive(false);
+
         }
         public void GameWon()
         {
             gameStateText.SetText("YOU WON!");
-            gameStateTextObj.SetActive(true);
+            gameStateText.gameObject.SetActive(true);
+            tryAgainButton.SetActive(true);
         }
         public void GameLost()
         {
             gameStateText.SetText("YOU LOST!");
-            gameStateTextObj.SetActive(true);
+            gameStateText.gameObject.SetActive(true);
             tryAgainButton.SetActive(true);
         }
         public void AllObjectivesCompleted()
         {
             objectiveArrow.SetActive(true);
             gameStateText.SetText("GO TO THE LANDING ZONE!");
-            gameStateTextObj.SetActive(true);
+            gameStateText.gameObject.SetActive(true);
         }
         public void OutsideRangeWarning()
         {

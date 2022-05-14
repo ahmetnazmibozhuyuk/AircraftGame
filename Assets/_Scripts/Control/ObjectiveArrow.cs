@@ -12,6 +12,8 @@ namespace Aircraft.Control
         }
         private void ArrowPointTowardsTarget()
         {
+            if (GameManager.instance.CurrentState != GameState.GameStarted) return;
+
             _targetDirection = Vector3.RotateTowards(transform.forward,
                 GameManager.instance.CurrentTargetTransform.position - transform.position, 1, 0.0f);
             transform.rotation = Quaternion.LookRotation(_targetDirection);

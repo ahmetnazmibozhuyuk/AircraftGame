@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using Aircraft.Control;
 
 namespace Aircraft.Managers
@@ -14,14 +15,22 @@ namespace Aircraft.Managers
         public bool AllObjectivesComplete { get; private set; }
         public Transform CurrentTargetTransform { get; private set; }
 
-        public Player Player { get; private set; }
-        public GameObject PlayerObject
-        {
-            get { return playerObject; }
-            set { playerObject = value; }
-        }
-        [SerializeField] private GameObject playerObject;
+        public AircraftBase Player { get; private set; }
+        public Controller PlayerController { get; private set; }
+        public GameObject PlayerObject { get; private set; }
 
+        public Slider AcceleratorSlider
+        {
+            get { return acceleratorSlider; }
+            set { acceleratorSlider = value; }
+        }
+        [SerializeField] private Slider acceleratorSlider;
+
+        public GameObject[] aircraftList;
+        public Transform[] courseList;
+
+
+        [SerializeField] private Transform spawnPoint;
         [SerializeField] private int maxOutRangeDelay = 10;
 
         private int _outRangeDelayCounter;
@@ -32,15 +41,36 @@ namespace Aircraft.Managers
         protected override void Awake()
         {
             base.Awake();
-            Player = PlayerObject.GetComponent<Player>();
+
             _uiManager = GetComponent<UIManager>();
             _levelManager = GetComponent<LevelManager>();
+        }
+
+        private void SelectAircraft(int aircraftIndex)
+        {
+            PlayerObject = Instantiate(aircraftList[aircraftIndex], spawnPoint.position, spawnPoint.rotation);
+
+            Player = PlayerObject.GetComponent<FighterAircraft>();
+            PlayerController = PlayerObject.GetComponent<Controller>();
+            ChangeState(GameState.GameStarted);
+        }
+
+        private void SelectCheckpointCourse(int courseIndex)
+        {
+            _levelManager.InitializeCheckpoints(courseList[courseIndex]);
+        }
+        public void InitializeGame(int courseIndex, int aircraftIndex)
+        {
+            SelectCheckpointCourse(courseIndex);
+            SelectAircraft(aircraftIndex);
+            ChangeState(GameState.GameStarted);
         }
         private void Start()
         {
             CurrentCheckpointIndex = 0;
             _outRangeDelayCounter = maxOutRangeDelay;
-            ChangeState(GameState.GameStarted);
+            ChangeState(GameState.GameAwaitingStart);
+
         }
 
         #region Game States
@@ -73,15 +103,18 @@ namespace Aircraft.Managers
         }
         private void GameStartedState()
         {
-            //throw new System.NotImplementedException();
+            PlayerController.EnableControl();
+            _uiManager.GameStarted();
         }
         private void GameWonState()
         {
             _uiManager.GameWon();
+            PlayerController.DisableControl();
         }
         private void GameLostState()
         {
             _uiManager.GameLost();
+            PlayerController.DisableControl();
         }
         #endregion
 
