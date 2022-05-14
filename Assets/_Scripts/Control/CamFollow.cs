@@ -13,8 +13,8 @@ namespace Aircraft.Control
         private void FixedUpdate()
         {
             transform.SetPositionAndRotation(
-                Vector3.Lerp(transform.position,GameManager.instance.Player.transform.position,Time.deltaTime*cameraPositionDelay), 
-                Quaternion.Lerp(transform.rotation, GameManager.instance.Player.transform.rotation, Time.deltaTime*cameraRotationDelay)
+                Vector3.Lerp(transform.position,GameManager.instance.PlayerObject.transform.position,Time.deltaTime*cameraPositionDelay), 
+                Quaternion.Lerp(transform.rotation, GameManager.instance.PlayerObject.transform.rotation, Time.deltaTime*cameraRotationDelay)
                 );
         }
     }

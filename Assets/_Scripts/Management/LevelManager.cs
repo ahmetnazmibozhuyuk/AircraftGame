@@ -7,6 +7,9 @@ namespace Aircraft.Managers
     {
         [SerializeField] private Transform checkpointParent;
         [SerializeField] private Transform landingTransform;
+
+        [SerializeField] private float maxDistanceFromTarget;
+
         private GameObject[] _checkpoint;
 
         private string _currentScene;
@@ -16,10 +19,6 @@ namespace Aircraft.Managers
         private float _elapsedTime;
         private readonly float _timeInterval = 2;
 
-        private void Awake()
-        {
-            
-        }
         private void Start()
         {
             InitializeCheckpoints();
@@ -34,8 +33,8 @@ namespace Aircraft.Managers
             if (_elapsedTime < _timeInterval) return;
 
             _elapsedTime = 0;
-            _distanceFromObjective = Vector3.Distance(GameManager.instance.Player.transform.position, GameManager.instance.CurrentTargetTransform.position);
-            if(_distanceFromObjective > 700)
+            _distanceFromObjective = Vector3.Distance(GameManager.instance.PlayerObject.transform.position, GameManager.instance.CurrentTargetTransform.position);
+            if(_distanceFromObjective > maxDistanceFromTarget)
             {
                 GameManager.instance.OutsideRange();
             }
@@ -43,7 +42,6 @@ namespace Aircraft.Managers
             {
                 GameManager.instance.InsideRange();
             }
-            Debug.Log(_distanceFromObjective);
         }
 
         public void NextCheckpoint()

@@ -8,11 +8,12 @@ namespace Aircraft.Interactable
     {
         private void OnTriggerEnter(Collider other)
         {
-            GameManager.instance.Player.GetComponent<Controller>().IsItInSafeZone(true);
+            GameManager.instance.Player.IsItInSafeZone(true);
         }
         private void OnTriggerExit(Collider other)
         {
-            GameManager.instance.Player.GetComponent<Controller>().IsItInSafeZone(false);
+            GameManager.instance.Player.IsItInSafeZone(false);
+            GameManager.instance.Player.LeftStartingPosition();
         }
     }
 }

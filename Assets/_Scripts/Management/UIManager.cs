@@ -1,52 +1,47 @@
 using UnityEngine;
-
+using TMPro;
 
 namespace Aircraft.Managers
 {
     public class UIManager : MonoBehaviour
     {
-        [SerializeField] private GameObject winText;
-        [SerializeField] private GameObject loseText;
-        [SerializeField] private GameObject allObjectivesCompleteText;
+        [SerializeField] private GameObject gameStateTextObj;
+        [SerializeField] private TextMeshProUGUI gameStateText;
 
+        [SerializeField] private GameObject outsideRangeWarning;
         [SerializeField] private GameObject tryAgainButton;
-
         [SerializeField] private GameObject objectiveArrow;
 
-        private Vector3 _targetDirection;
+        [SerializeField] private TextMeshProUGUI scoreText;
 
-
-        private void Update()
+        public void UpdateScore()
         {
-            ArrowPointTowardsTarget();
-        }
-        private void ArrowPointTowardsTarget()
-        {
-            _targetDirection= Vector3.RotateTowards(objectiveArrow.transform.forward, 
-                GameManager.instance.CurrentTargetTransform.position - objectiveArrow.transform.position, 1, 0.0f);
-            objectiveArrow.transform.rotation = Quaternion.LookRotation(_targetDirection);
-        }
-
-        public void NextCheckpoint()
-        {
-
+            scoreText.SetText("Score: "+GameManager.instance.Score.ToString());
         }
         public void GameWon()
         {
-            allObjectivesCompleteText.SetActive(false);
-            winText.SetActive(true);
+            gameStateText.SetText("YOU WON!");
+            gameStateTextObj.SetActive(true);
         }
         public void GameLost()
         {
-            allObjectivesCompleteText.SetActive(false);
-            loseText.SetActive(true);
+            gameStateText.SetText("YOU LOST!");
+            gameStateTextObj.SetActive(true);
             tryAgainButton.SetActive(true);
         }
         public void AllObjectivesCompleted()
         {
             objectiveArrow.SetActive(true);
-            allObjectivesCompleteText.SetActive(true);
-
+            gameStateText.SetText("GO TO THE LANDING ZONE!");
+            gameStateTextObj.SetActive(true);
+        }
+        public void OutsideRangeWarning()
+        {
+            outsideRangeWarning.SetActive(true);
+        }
+        public void DismissOutsideRangeWarning()
+        {
+            outsideRangeWarning.SetActive(false);
         }
     }
 }

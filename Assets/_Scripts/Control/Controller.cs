@@ -4,25 +4,28 @@ using UnityEngine.InputSystem;
 using Aircraft.Managers;
 
 namespace Aircraft.Control
-
-
-    // scriptible obje ile uçağa has tüm değerleri variable olarak al uçak ivmesi, dönüş hızı manevra kabiliyeti vs hepsini ordan alsın; birden fazla uçak yap
-
 {
     [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
     public class Controller : MonoBehaviour
     {
+        public float AcceleratorVal { get; private set; }
+
+        // todo : Scriptable obje haline getirerek uçakları çeşitlendir. Player classını abstract yap böylece çeşitli uçaklar için özelleştirilmiş classlar oluştur.
+        #region Aircraft Identity
+        [SerializeField] private float maxSpeed;
+        [Range(0.01f,0.5f)] [Tooltip("How quickly the plane reaches its max speed.")]
         [SerializeField] private float accelerationMultiplier;
+        [Tooltip("Up - down maneuver multiplier.")]
+        [SerializeField] private float xTorqueMultiplier = 1;
+        [Tooltip("Left - right maneuver multiplier.")]
+        [SerializeField] private float yTorqueMultiplier = 1;
+        [Tooltip("Roll maneuver multiplier.")]
+        [SerializeField] private float zTorqueMultiplier = 1;
+        [Tooltip("How quickly the plane readjusts its roll when the input is released.")]
+        [SerializeField] private float noInputReadjustSpeed = 1;
+        #endregion
 
         [SerializeField] private Slider accelerator;
-
-        [SerializeField] private ParticleSystem leftEngineParticle;
-        [SerializeField] private ParticleSystem rightEngineParticle;
-
-        [SerializeField] private GameObject explosionParticle;
-
-        private ParticleSystem.MainModule _leftEngine;
-        private ParticleSystem.MainModule _rightEngine;
 
         private Rigidbody _rigidbody;
         private PlayerInput _input;
@@ -30,18 +33,12 @@ namespace Aircraft.Control
         private Vector3 _rotateVector;
         private Vector3 _forwardSpeed;
 
-        private bool _isInSafeZone = true;
-
         private float _throttle;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
             _input = GetComponent<PlayerInput>();
-
-            _leftEngine = leftEngineParticle.main;
-            _rightEngine = rightEngineParticle.main;
-
         }
         private void Update()
         {
@@ -53,88 +50,36 @@ namespace Aircraft.Control
         {
             if (GameManager.instance.CurrentState != GameState.GameStarted) return;
             SetControl();
-            AssignEngineParticleValue();
+        }
+        public void RemoveDrag()
+        {
+            _rigidbody.drag = 0;
+            _rigidbody.angularDrag = 0;
         }
         #region Control and Movement
         private void SetControl()
         {
-            //ivme kazanma ve kaybetme değerleri için branch at eüer throttle acc val'den büyükse küçükse vs
+            AcceleratorVal = accelerator.value;
+            _rigidbody.drag = AcceleratorVal * 2;
+            _throttle = Mathf.Lerp(_throttle, AcceleratorVal, Time.deltaTime * accelerationMultiplier);
 
-
-            _rigidbody.drag = accelerator.value * 5;
-
-            _throttle = Mathf.Lerp(_throttle, accelerator.value, Time.deltaTime * 0.2f);
-
-            _forwardSpeed = _throttle * accelerationMultiplier * Time.deltaTime * transform.forward;
+            _forwardSpeed = _throttle * maxSpeed * Time.deltaTime * transform.forward;
             _rotateVector = _input.actions["Rotate"].ReadValue<Vector2>();
         }
-
         private void AssignRotation()
         {
-            _rigidbody.AddRelativeTorque(new Vector3(-_rotateVector.y, _rotateVector.x, _rotateVector.x)); // Rotation based on input
+            _rigidbody.AddRelativeTorque(
+                new Vector3(-_rotateVector.y*xTorqueMultiplier, _rotateVector.x*yTorqueMultiplier, _rotateVector.x*zTorqueMultiplier)); // Rotation based on input
+
             if (_rotateVector == Vector3.zero)                                                              // Readjusting rotation when there are no input
             {
                 _rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation,
-                    Quaternion.LookRotation(transform.forward, Vector3.up), 100 * Time.deltaTime * 1));
+                    Quaternion.LookRotation(transform.forward, Vector3.up), 100 * Time.deltaTime * noInputReadjustSpeed));
             }
         }
         private void AssignForwardMovement()
         {
             _rigidbody.MovePosition(transform.position + _forwardSpeed);
-        }
-        #endregion
-
-        #region Airplane Particle Effects
-        private void AssignEngineParticleValue()
-        {
-            _leftEngine.startLifetime = accelerator.value;
-            _rightEngine.startLifetime = accelerator.value;
-        }
-        #endregion
-
-        #region Crash - Hitting Ground
-        public void IsItInSafeZone(bool inZone)
-        {
-            _isInSafeZone = inZone;
-        }
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (_isInSafeZone && GameManager.instance.AllObjectivesComplete)
-            {
-                if(accelerator.value > 0.4f)
-                {
-                    CrashLanding();
-                }
-                else
-                {
-                    PerfectLanding();
-                }
-            }
-            if (!_isInSafeZone)
-            {
-                Crash();
-            }
-        }
-        private void CrashLanding()
-        {
-            _rigidbody.drag = 0;
-            _rigidbody.angularDrag = 0;
-            Debug.Log("YOU WON. CRASH LANDING; DEDUCT POINTS");
-            GameManager.instance.ChangeState(GameState.GameWon);
-        }
-        private void PerfectLanding()
-        {
-            _rigidbody.drag = 0;
-            _rigidbody.angularDrag = 0;
-            GameManager.instance.ChangeState(GameState.GameWon);
-            Debug.Log("AMAZING, MISSION COMPLETE! THAT RIGHT THERE IS WHY YOU'RE THE BEST BOSS. ONE AND ONLY.");
-        }
-        private void Crash()
-        {
-            _rigidbody.drag = 0;
-            _rigidbody.angularDrag = 0;
-            GameManager.instance.ChangeState(GameState.GameLost);
-            explosionParticle.SetActive(true);
         }
         #endregion
     }

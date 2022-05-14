@@ -47,7 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 621884647f7cc3c48a9176cc67189612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 120
+  hitParticle: {fileID: 8288671725633179127, guid: 47d35e5e85216f34ebd3588f84b26de8, type: 3}
+  hitScore: 20
+  rotationSpeed: 80
 --- !u!33 &3344031181624224450
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -154,7 +156,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4897313369328543443}
-  - component: {fileID: 9138007668759926099}
+  - component: {fileID: 3324218562650965908}
   - component: {fileID: 8383761982806190454}
   - component: {fileID: 6034238918457990588}
   - component: {fileID: 896558972083779552}
@@ -180,7 +182,7 @@ Transform:
   m_Father: {fileID: 2442460524354851147}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9138007668759926099
+--- !u!114 &3324218562650965908
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -189,10 +191,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 5241363285687221353}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9e92fba3c7b15a844a0afdd760e07cac, type: 3}
+  m_Script: {fileID: 11500000, guid: 621884647f7cc3c48a9176cc67189612, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 120
+  hitParticle: {fileID: 8288671725633179127, guid: fd495797269760a47931f4873778face, type: 3}
+  hitScore: -5
+  rotationSpeed: -50
 --- !u!33 &8383761982806190454
 MeshFilter:
   m_ObjectHideFlags: 0
