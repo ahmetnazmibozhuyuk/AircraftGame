@@ -1181,7 +1181,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Fighter 0
+  m_text: Propeller Plane
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2863,9 +2863,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cab64bacae5136648ac4e962e7661903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerObject: {fileID: 0}
   acceleratorSlider: {fileID: 627289682}
   aircraftList:
+  - {fileID: 7333732762905423552, guid: ab6ebd6e3ff68e74b845abb8a520175d, type: 3}
   - {fileID: 7333732762905423552, guid: 8ac4b5185410cbd4e8a42c43865e94bd, type: 3}
   - {fileID: 7333732762905423552, guid: dcff53ff3da1cae47aa249771f44395b, type: 3}
   courseList:
@@ -5083,9 +5083,11 @@ MonoBehaviour:
   m_Value: 0
   m_Options:
     m_Options:
-    - m_Text: Fighter 0
+    - m_Text: Propeller Plane
       m_Image: {fileID: 0}
     - m_Text: Fighter 1
+      m_Image: {fileID: 0}
+    - m_Text: Fighter 2
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

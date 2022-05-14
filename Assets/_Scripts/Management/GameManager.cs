@@ -49,10 +49,8 @@ namespace Aircraft.Managers
         private void SelectAircraft(int aircraftIndex)
         {
             PlayerObject = Instantiate(aircraftList[aircraftIndex], spawnPoint.position, spawnPoint.rotation);
-
-            Player = PlayerObject.GetComponent<FighterAircraft>();
+            Player = PlayerObject.GetComponent<AircraftBase>();
             PlayerController = PlayerObject.GetComponent<Controller>();
-            ChangeState(GameState.GameStarted);
         }
 
         private void SelectCheckpointCourse(int courseIndex)

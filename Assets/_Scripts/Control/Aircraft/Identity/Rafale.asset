@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa6daebd4c1063949a09cde8f2cb44e3, type: 3}
-  m_Name: BigFighterJet
+  m_Name: Rafale
   m_EditorClassIdentifier: 
-  maxSpeed: 70
-  accelerationMultiplier: 0.08
-  xTorqueMultiplier: 0.8
-  yTorqueMultiplier: 0.7
-  zTorqueMultiplier: 0.3
-  noInputReadjustSpeed: 3
+  maxSpeed: 160
+  accelerationMultiplier: 0.153
+  xTorqueMultiplier: 1
+  yTorqueMultiplier: 1.1
+  zTorqueMultiplier: 0.8
+  noInputReadjustSpeed: 5
