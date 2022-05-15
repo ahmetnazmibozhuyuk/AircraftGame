@@ -7,7 +7,7 @@ namespace Aircraft.Control
     {
         public float maxSpeed;
 
-        [Range(0.01f, 0.5f)]
+        [Range(0.0002f, 0.01f)]
         [Tooltip("How quickly the plane reaches its max speed.")]
         public float accelerationMultiplier;
 

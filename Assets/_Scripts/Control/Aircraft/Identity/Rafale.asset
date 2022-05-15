@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6daebd4c1063949a09cde8f2cb44e3, type: 3}
   m_Name: Rafale
   m_EditorClassIdentifier: 
-  maxSpeed: 140
-  accelerationMultiplier: 0.18
-  xTorqueMultiplier: 1
-  yTorqueMultiplier: 1.1
-  zTorqueMultiplier: 0.8
-  noInputReadjustSpeed: 5
+  maxSpeed: 2.8
+  accelerationMultiplier: 0.00443
+  xTorqueMultiplier: 5
+  yTorqueMultiplier: 5.5
+  zTorqueMultiplier: 3.5
+  noInputReadjustSpeed: 1.7

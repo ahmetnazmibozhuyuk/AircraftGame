@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6daebd4c1063949a09cde8f2cb44e3, type: 3}
   m_Name: PropellerPlane
   m_EditorClassIdentifier: 
-  maxSpeed: 70
-  accelerationMultiplier: 0.07
-  xTorqueMultiplier: 0.8
-  yTorqueMultiplier: 0.9
-  zTorqueMultiplier: 0.2
-  noInputReadjustSpeed: 2.5
+  maxSpeed: 1.4
+  accelerationMultiplier: 0.00153
+  xTorqueMultiplier: 5
+  yTorqueMultiplier: 5
+  zTorqueMultiplier: 2.5
+  noInputReadjustSpeed: 0.7

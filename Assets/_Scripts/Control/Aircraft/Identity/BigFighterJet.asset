@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa6daebd4c1063949a09cde8f2cb44e3, type: 3}
   m_Name: BigFighterJet
   m_EditorClassIdentifier: 
-  maxSpeed: 120
-  accelerationMultiplier: 0.1
-  xTorqueMultiplier: 0.95
-  yTorqueMultiplier: 0.9
-  zTorqueMultiplier: 0.6
-  noInputReadjustSpeed: 4
+  maxSpeed: 2.4
+  accelerationMultiplier: 0.00325
+  xTorqueMultiplier: 5.5
+  yTorqueMultiplier: 5.2
+  zTorqueMultiplier: 3
+  noInputReadjustSpeed: 1.5

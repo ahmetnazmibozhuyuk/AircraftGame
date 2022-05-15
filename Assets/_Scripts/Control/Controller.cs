@@ -27,33 +27,20 @@ namespace Aircraft.Control
             _rigidbody = GetComponent<Rigidbody>();
             _input = GetComponent<PlayerInput>();
         }
-        private void Update()
-        {
-            AssignForwardMovement();
-            if (!_controlsEnabled) return;
-            AssignRotation();
-        }
         private void FixedUpdate()
         {
+
+            AssignForwardMovement();
             if (!_controlsEnabled)
             {
                 SafeLandingSetControl();
                 return;
             }
             SetControl();
+            AssignRotation();
+
         }
-        private void SafeLandingSetControl()
-        {
-            if (GameManager.instance.LandedPerfectly) 
-            {
-                if (_throttle > 0) _throttle -= 0.007f;
-                else _throttle = 0;
-                _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed * Time.deltaTime * transform.forward;
-                return;
-            }
-            _throttle = 0;
-            _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed * Time.deltaTime * transform.forward;
-        }
+
         public void EnableControl()
         {
             _controlsEnabled = true;
@@ -75,8 +62,20 @@ namespace Aircraft.Control
             _rotateVector = _input.actions["Rotate"].ReadValue<Vector2>();
 
             _rigidbody.drag = AcceleratorVal * 2;
-            _throttle = Mathf.Lerp(_throttle, AcceleratorVal, Time.deltaTime * _aircraftIdentity.accelerationMultiplier);
-            _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed * Time.deltaTime * transform.forward;
+            _throttle = Mathf.Lerp(_throttle, AcceleratorVal,  _aircraftIdentity.accelerationMultiplier);
+            _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed *  transform.forward;
+        }
+        private void SafeLandingSetControl()
+        {
+            if (GameManager.instance.LandedPerfectly)
+            {
+                if (_throttle > 0) _throttle -= 0.007f;
+                else _throttle = 0;
+                _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed *  transform.forward;
+                return;
+            }
+            _throttle = 0;
+            _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed *  transform.forward;
         }
         private void AssignRotation()
         {
@@ -88,7 +87,7 @@ namespace Aircraft.Control
             if (_rotateVector == Vector3.zero)                         // Readjusting rotation when there are no input
             {
                 _rigidbody.MoveRotation(Quaternion.RotateTowards(transform.rotation,
-                    Quaternion.LookRotation(transform.forward, Vector3.up), 100 * Time.deltaTime * _aircraftIdentity.noInputReadjustSpeed));
+                    Quaternion.LookRotation(transform.forward, Vector3.up),  _aircraftIdentity.noInputReadjustSpeed));
             }
         }
         private void AssignForwardMovement()
