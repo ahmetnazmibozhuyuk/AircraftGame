@@ -40,3 +40,6 @@ zone.
 Only package used in the project is the new Input system of Unity. Airplane, hangar and
 landing zone assets were given by Brat Games. Objective arrow and checkpoint mesh
 are drawn in Blender by me.
+
+The link for android apk build:
+https://drive.google.com/file/d/1jM7mdmIl2F-az5Oo7eMjKni-BgHyFgcN/view?usp=sharing
