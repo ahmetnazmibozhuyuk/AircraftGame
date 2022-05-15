@@ -1,0 +1,38 @@
+
+-----GENERAL-----
+
+The main focus while working on this project was making it managable and scalable. Airplane 
+controls are created with a scriptible object. Different types of aircrafts are available
+and can be easily extended simply by deriving from the AircraftBase abstract class.
+A new course in a level can be created by adding the checkpoints in an empty and dragging
+that emty into CourseList array on GameManager. 
+
+I didn't focus on level design but tried to make it so that someone without code knowledge
+can still open it; create new courses and design the level. The terrains looks mostly 
+plain and with no texture. Added some mountains, a simple airplane hangar and an 
+airfield for the plane to takeoff from to test the controls and that is it.
+
+-----CONTROLS-----
+
+Left and right touch buttons are tied to gamepad controls so the game can be 
+played with a controller, touch buttons or a mouse. Since there are
+ two buttons on the each side of the screen, rather than the mouse, 
+gamepad or touch controls are recommended.
+
+The left stick controls the accelerator and the right stick controls the rotation of the aircraft.
+The slider on the left stick is controlled by an invisible on screen button. The slider itself 
+is not interactable and is there to provide the visual for accelerator. The sensitivity of
+left stick can be adjusted from Controller class' readonly float value _leftStickSensitivity.
+
+-----IN GAME-----
+
+I added an arrow over the player that shows the direction of the next target. I felt a way
+of showing the next object was necessary but it can be removed or replaced with an another
+solution.
+
+The player has to land the aircraft after finishing all checkpoints in a level. To make it 
+more forgiving for players who have already finished all checkpoints, I made it so that the
+player doesn't have to land the plane properly to win the game. Just touching the landing 
+zone after all objectives are finished rewards the player the win with a smaller score bonus.
+Proper or crash landing is determined by the y speed of the player when touching the landing 
+zone.

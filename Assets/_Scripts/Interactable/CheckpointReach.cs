@@ -3,6 +3,7 @@ using Aircraft.Managers;
 
 namespace Aircraft.Interactable
 {
+    //Both successful and unsuccessful checkpoint interactions are called from the same class with different point and particle effects.
     public class CheckpointReach : MonoBehaviour
     {
         [SerializeField] private GameObject hitParticle;
@@ -19,7 +20,7 @@ namespace Aircraft.Interactable
             if (other.CompareTag("Player"))
             {
                 GameManager.instance.HitCheckpoint(hitScore);
-                var particle = Instantiate(hitParticle, transform.position, transform.rotation);
+                GameObject particle = Instantiate(hitParticle, transform.position, transform.rotation);
                 Destroy(particle, 1);
             }
         }

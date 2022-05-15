@@ -5,25 +5,19 @@ namespace Aircraft.Managers
 {
     public class LevelManager : MonoBehaviour
     {
-        
-
         [SerializeField] private Transform landingTransform;
 
         [SerializeField] private float maxDistanceFromTarget;
 
-
+        private GameObject[] _checkpoint;
 
         private Transform _checkpointParent;
-
-        private GameObject[] _checkpoint;
 
         private string _currentScene;
 
         private float _distanceFromObjective;
-
         private float _elapsedTime;
         private readonly float _timeInterval = 2;
-
 
         private void Update()
         {
@@ -42,6 +36,21 @@ namespace Aircraft.Managers
             _currentScene = SceneManager.GetActiveScene().name;
             _checkpoint[0].SetActive(true);
             GameManager.instance.AssignCurrentTarget(_checkpoint[0].transform);
+        }
+        public void NextCheckpoint()
+        {
+            _checkpoint[GameManager.instance.CurrentCheckpointIndex - 1].SetActive(false);
+
+            if (GameManager.instance.CurrentCheckpointIndex < _checkpoint.Length)
+            {
+                _checkpoint[GameManager.instance.CurrentCheckpointIndex].SetActive(true);
+                GameManager.instance.AssignCurrentTarget(_checkpoint[GameManager.instance.CurrentCheckpointIndex].transform);
+            }
+            else
+            {
+                GameManager.instance.AllObjectivesAreCompleted();
+                GameManager.instance.AssignCurrentTarget(landingTransform);
+            }
         }
         public void RestartLevel()
         {
@@ -65,24 +74,5 @@ namespace Aircraft.Managers
                 GameManager.instance.InsideRange();
             }
         }
-
-        public void NextCheckpoint()
-        {
-            _checkpoint[GameManager.instance.CurrentCheckpointIndex-1].SetActive(false);
-
-            if (GameManager.instance.CurrentCheckpointIndex < _checkpoint.Length)
-            {
-                _checkpoint[GameManager.instance.CurrentCheckpointIndex].SetActive(true);
-                GameManager.instance.AssignCurrentTarget(_checkpoint[GameManager.instance.CurrentCheckpointIndex].transform);
-            }
-            else
-            {
-                GameManager.instance.AllObjectivesAreCompleted();
-                GameManager.instance.AssignCurrentTarget(landingTransform);
-            }
-        }
-
-
-
     }
 }

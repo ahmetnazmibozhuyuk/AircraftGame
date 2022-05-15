@@ -12,12 +12,16 @@ namespace Aircraft.Control
 
         private void FixedUpdate()
         {
-            if (GameManager.instance.PlayerObject == null) return;
-
-            transform.SetPositionAndRotation(
-                Vector3.Lerp(transform.position,GameManager.instance.PlayerObject.transform.position,Time.deltaTime*cameraPositionDelay), 
-                Quaternion.Lerp(transform.rotation, GameManager.instance.PlayerObject.transform.rotation, Time.deltaTime*cameraRotationDelay)
-                );
+            if (GameManager.instance.PlayerObject == null || GameManager.instance.CurrentState != GameState.GameStarted) return;
+                transform.SetPositionAndRotation(CamPosition(), CamRotation());
+        }
+        private Quaternion CamRotation()
+        {
+            return Quaternion.Lerp(transform.rotation, GameManager.instance.PlayerObject.transform.rotation, Time.deltaTime * cameraRotationDelay);
+        }
+        private Vector3 CamPosition()
+        {
+            return Vector3.Lerp(transform.position, GameManager.instance.PlayerObject.transform.position, Time.deltaTime * cameraPositionDelay);
         }
     }
 }

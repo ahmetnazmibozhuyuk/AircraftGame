@@ -13,6 +13,7 @@ namespace Aircraft.Managers
         public int CurrentCheckpointIndex { get; private set; }
 
         public bool AllObjectivesComplete { get; private set; }
+
         public Transform CurrentTargetTransform { get; private set; }
 
         public AircraftBase Player { get; private set; }
@@ -31,8 +32,8 @@ namespace Aircraft.Managers
         public GameObject[] aircraftList;
         public Transform[] courseList;
 
-
         [SerializeField] private Transform spawnPoint;
+        [Tooltip("The countdown start number for the player leaving the maximum range from the current objective.")]
         [SerializeField] private int maxOutRangeDelay = 10;
 
         [SerializeField] private int perfectLandingBonusScore;
@@ -46,18 +47,24 @@ namespace Aircraft.Managers
         protected override void Awake()
         {
             base.Awake();
-
             _uiManager = GetComponent<UIManager>();
             _levelManager = GetComponent<LevelManager>();
         }
+        private void Start()
+        {
+            LandedPerfectly = false;
+            CurrentCheckpointIndex = 0;
+            _outRangeDelayCounter = maxOutRangeDelay;
+            ChangeState(GameState.GameAwaitingStart);
+        }
 
+        #region Aircraft and Course Selection
         private void SelectAircraft(int aircraftIndex)
         {
             PlayerObject = Instantiate(aircraftList[aircraftIndex], spawnPoint.position, spawnPoint.rotation);
             Player = PlayerObject.GetComponent<AircraftBase>();
             PlayerController = PlayerObject.GetComponent<Controller>();
         }
-
         private void SelectCheckpointCourse(int courseIndex)
         {
             _levelManager.InitializeCheckpoints(courseList[courseIndex]);
@@ -68,14 +75,7 @@ namespace Aircraft.Managers
             SelectAircraft(aircraftIndex);
             ChangeState(GameState.GameStarted);
         }
-        private void Start()
-        {
-            LandedPerfectly = false;
-            CurrentCheckpointIndex = 0;
-            _outRangeDelayCounter = maxOutRangeDelay;
-            ChangeState(GameState.GameAwaitingStart);
-
-        }
+        #endregion
 
         #region Game States
         public void ChangeState(GameState newState)
@@ -132,10 +132,12 @@ namespace Aircraft.Managers
         {
             LandedPerfectly = true;
             UpdateScore(perfectLandingBonusScore);
+            ChangeState(GameState.GameWon);
         }
         public void CrashLanding()
         {
             UpdateScore(crashLandingBonusScore);
+            ChangeState(GameState.GameWon);
         }
         #endregion
 
@@ -155,7 +157,6 @@ namespace Aircraft.Managers
             AllObjectivesComplete = true;
             _uiManager.AllObjectivesCompleted();
         }
-
         public void OutsideRange()
         {
             _outRangeDelayCounter--;

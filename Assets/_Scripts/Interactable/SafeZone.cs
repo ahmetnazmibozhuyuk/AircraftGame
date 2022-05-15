@@ -12,6 +12,7 @@ namespace Aircraft.Interactable
         private void OnTriggerExit(Collider other)
         {
             GameManager.instance.Player.IsItInSafeZone(false);
+            //Once the player leaves the safe zone, they can't re-enter unless all objectives are completed.
             GameManager.instance.Player.LeftStartingPosition();
         }
     }

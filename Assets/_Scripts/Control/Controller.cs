@@ -4,7 +4,7 @@ using Aircraft.Managers;
 
 namespace Aircraft.Control
 {
-    [RequireComponent(typeof(Rigidbody), typeof(PlayerInput), typeof(AircraftBase))]
+    [RequireComponent(typeof(Rigidbody), typeof(PlayerInput))]
     public class Controller : MonoBehaviour
     {
         public float AcceleratorVal { get; private set; }
@@ -17,6 +17,7 @@ namespace Aircraft.Control
         private Vector3 _rotateVector;
         private Vector3 _forwardSpeed;
 
+        private readonly float _leftStickSensitivity = 0.03f;
         private float _throttle;
 
         private bool _controlsEnabled;
@@ -69,9 +70,10 @@ namespace Aircraft.Control
         #region Control and Movement
         private void SetControl()
         {
-            GameManager.instance.AcceleratorSlider.value += _input.actions["Acceleration"].ReadValue<Vector2>().y * 0.03f;
+            GameManager.instance.AcceleratorSlider.value += _input.actions["Acceleration"].ReadValue<Vector2>().y * _leftStickSensitivity;
             AcceleratorVal = GameManager.instance.AcceleratorSlider.value;
             _rotateVector = _input.actions["Rotate"].ReadValue<Vector2>();
+
             _rigidbody.drag = AcceleratorVal * 2;
             _throttle = Mathf.Lerp(_throttle, AcceleratorVal, Time.deltaTime * _aircraftIdentity.accelerationMultiplier);
             _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed * Time.deltaTime * transform.forward;

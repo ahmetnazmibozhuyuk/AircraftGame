@@ -2,7 +2,6 @@ using UnityEngine;
 
 namespace Aircraft.Control
 {
-
     public class FighterAircraft : AircraftBase
     {
         [SerializeField] private GameObject explosionParticle;
@@ -13,11 +12,9 @@ namespace Aircraft.Control
         private ParticleSystem.MainModule _leftEngine;
         private ParticleSystem.MainModule _rightEngine;
 
-        private Controller _controller;
-
-        private void Awake()
+        protected override void Awake()
         {
-            _controller = GetComponent<Controller>();
+            base.Awake();
             _leftEngine = leftEngineParticle.main;
             _rightEngine = rightEngineParticle.main;
         }
@@ -32,13 +29,11 @@ namespace Aircraft.Control
             _leftEngine.startLifetime = _controller.AcceleratorVal;
             _rightEngine.startLifetime = _controller.AcceleratorVal;
         }
-        #endregion
-
         protected override void Crash()
         {
             base.Crash();
             explosionParticle.SetActive(true);
         }
-
+        #endregion
     }
 }
