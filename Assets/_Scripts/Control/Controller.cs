@@ -43,13 +43,14 @@ namespace Aircraft.Control
         }
         private void SafeLandingSetControl()
         {
-            if (GameManager.instance.CurrentState != GameState.GameWon) 
+            if (GameManager.instance.LandedPerfectly) 
             {
-                _throttle = 0;
+                if (_throttle > 0) _throttle -= 0.007f;
+                else _throttle = 0;
                 _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed * Time.deltaTime * transform.forward;
                 return;
             }
-            if (_throttle > 0) _throttle -= 0.01f;
+            _throttle = 0;
             _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed * Time.deltaTime * transform.forward;
         }
         public void EnableControl()

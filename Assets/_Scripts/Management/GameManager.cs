@@ -19,6 +19,8 @@ namespace Aircraft.Managers
         public Controller PlayerController { get; private set; }
         public GameObject PlayerObject { get; private set; }
 
+        public bool LandedPerfectly { get; private set; }
+
         public Slider AcceleratorSlider
         {
             get { return acceleratorSlider; }
@@ -32,6 +34,9 @@ namespace Aircraft.Managers
 
         [SerializeField] private Transform spawnPoint;
         [SerializeField] private int maxOutRangeDelay = 10;
+
+        [SerializeField] private int perfectLandingBonusScore;
+        [SerializeField] private int crashLandingBonusScore;
 
         private int _outRangeDelayCounter;
 
@@ -65,6 +70,7 @@ namespace Aircraft.Managers
         }
         private void Start()
         {
+            LandedPerfectly = false;
             CurrentCheckpointIndex = 0;
             _outRangeDelayCounter = maxOutRangeDelay;
             ChangeState(GameState.GameAwaitingStart);
@@ -121,6 +127,15 @@ namespace Aircraft.Managers
         {
             Score += score;
             _uiManager.UpdateScore();
+        }
+        public void PerfectLanding()
+        {
+            LandedPerfectly = true;
+            UpdateScore(perfectLandingBonusScore);
+        }
+        public void CrashLanding()
+        {
+            UpdateScore(crashLandingBonusScore);
         }
         #endregion
 

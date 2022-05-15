@@ -5,11 +5,13 @@ namespace Aircraft.Managers
 {
     public class LevelManager : MonoBehaviour
     {
-
+        
 
         [SerializeField] private Transform landingTransform;
 
         [SerializeField] private float maxDistanceFromTarget;
+
+
 
         private Transform _checkpointParent;
 

@@ -75,15 +75,13 @@ namespace Aircraft.Control
         }
         protected virtual void CrashLanding()
         {
-            GameManager.instance.UpdateScore(10);
+            GameManager.instance.CrashLanding();
             GameManager.instance.ChangeState(GameState.GameWon);
-            Debug.Log("CRASH LANDING!");
         }
         protected virtual void PerfectLanding()
         {
-            GameManager.instance.UpdateScore(50);
+            GameManager.instance.PerfectLanding();
             GameManager.instance.ChangeState(GameState.GameWon);
-            Debug.Log("PERFECT LANDING!");
         }
         protected virtual void Crash()
         {
