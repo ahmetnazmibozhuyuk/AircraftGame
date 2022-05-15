@@ -36,3 +36,7 @@ player doesn't have to land the plane properly to win the game. Just touching th
 zone after all objectives are finished rewards the player the win with a smaller score bonus.
 Proper or crash landing is determined by the y speed of the player when touching the landing 
 zone.
+
+Only package used in the project is the new Input system of Unity. Airplane, hangar and
+landing zone assets were given by Brat Games. Objective arrow and checkpoint mesh
+are drawn in Blender by me.

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: aa6daebd4c1063949a09cde8f2cb44e3, type: 3}
-  m_Name: BigFighterJet
+  m_Name: Airliner
   m_EditorClassIdentifier: 
-  maxSpeed: 2.5
-  accelerationMultiplier: 0.00325
-  xTorqueMultiplier: 4.5
-  yTorqueMultiplier: 5.2
-  zTorqueMultiplier: 3
-  noInputReadjustSpeed: 1.5
+  maxSpeed: 1.9
+  accelerationMultiplier: 0.0016
+  xTorqueMultiplier: 3.5
+  yTorqueMultiplier: 4
+  zTorqueMultiplier: 1.3
+  noInputReadjustSpeed: 0.6

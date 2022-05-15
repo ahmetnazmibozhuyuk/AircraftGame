@@ -34,7 +34,7 @@ namespace Aircraft.Managers
         public void AllObjectivesCompleted()
         {
             objectiveArrow.SetActive(true);
-            gameStateText.SetText("GO TO THE LANDING ZONE!");
+            gameStateText.SetText("Land the plane!");
             gameStateText.gameObject.SetActive(true);
             stateTextBackground.SetActive(true);
         }
