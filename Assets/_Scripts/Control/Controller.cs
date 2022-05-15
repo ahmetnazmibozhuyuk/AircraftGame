@@ -28,14 +28,29 @@ namespace Aircraft.Control
         }
         private void Update()
         {
-            if (!_controlsEnabled) return;
             AssignForwardMovement();
+            if (!_controlsEnabled) return;
             AssignRotation();
         }
         private void FixedUpdate()
         {
-            if (!_controlsEnabled) return;
+            if (!_controlsEnabled)
+            {
+                SafeLandingSetControl();
+                return;
+            }
             SetControl();
+        }
+        private void SafeLandingSetControl()
+        {
+            if (GameManager.instance.CurrentState != GameState.GameWon) 
+            {
+                _throttle = 0;
+                _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed * Time.deltaTime * transform.forward;
+                return;
+            }
+            if (_throttle > 0) _throttle -= 0.01f;
+            _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed * Time.deltaTime * transform.forward;
         }
         public void EnableControl()
         {
@@ -53,21 +68,19 @@ namespace Aircraft.Control
         #region Control and Movement
         private void SetControl()
         {
-            GameManager.instance.AcceleratorSlider.value += _input.actions["Acceleration"].ReadValue<Vector2>().y*0.03f;
+            GameManager.instance.AcceleratorSlider.value += _input.actions["Acceleration"].ReadValue<Vector2>().y * 0.03f;
             AcceleratorVal = GameManager.instance.AcceleratorSlider.value;
-            _rigidbody.drag = AcceleratorVal * 2;
-
-            _throttle = Mathf.Lerp(_throttle, AcceleratorVal, Time.deltaTime * _aircraftIdentity.accelerationMultiplier);
-
-            _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed * Time.deltaTime * transform.forward;
             _rotateVector = _input.actions["Rotate"].ReadValue<Vector2>();
+            _rigidbody.drag = AcceleratorVal * 2;
+            _throttle = Mathf.Lerp(_throttle, AcceleratorVal, Time.deltaTime * _aircraftIdentity.accelerationMultiplier);
+            _forwardSpeed = _throttle * _aircraftIdentity.maxSpeed * Time.deltaTime * transform.forward;
         }
         private void AssignRotation()
         {
             _rigidbody.AddRelativeTorque(
-                new Vector3(-_rotateVector.y* _aircraftIdentity.xTorqueMultiplier*_throttle,
-                _rotateVector.x* _aircraftIdentity.yTorqueMultiplier* _throttle,
-                -_rotateVector.x* _aircraftIdentity.zTorqueMultiplier* _throttle)); // Rotation based on input
+                new Vector3(-_rotateVector.y * _aircraftIdentity.xTorqueMultiplier * _throttle,
+                _rotateVector.x * _aircraftIdentity.yTorqueMultiplier * _throttle,
+                -_rotateVector.x * _aircraftIdentity.zTorqueMultiplier * _throttle)); // Rotation based on input
 
             if (_rotateVector == Vector3.zero)                         // Readjusting rotation when there are no input
             {

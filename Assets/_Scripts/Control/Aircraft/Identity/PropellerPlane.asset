@@ -15,6 +15,6 @@ MonoBehaviour:
   maxSpeed: 70
   accelerationMultiplier: 0.07
   xTorqueMultiplier: 0.8
-  yTorqueMultiplier: 0.7
+  yTorqueMultiplier: 0.9
   zTorqueMultiplier: 0.2
-  noInputReadjustSpeed: 3
+  noInputReadjustSpeed: 2.5

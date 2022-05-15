@@ -32,7 +32,6 @@ namespace Aircraft.Control
             _lastYPosition = transform.position.y;
             if (_elapsedTime > _timeInterval)
             {
-                Debug.Log(_yDisplacement);
                 _yDisplacement = 0;
                 _elapsedTime = 0;
             }

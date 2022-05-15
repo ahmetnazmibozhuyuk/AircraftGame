@@ -5194,6 +5194,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52e932564bafec448041cda31b1d604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  getMovement: 1
   _aircraftIdentity: {fileID: 11400000, guid: 098eb6230125d954ebf773c9e27e4616, type: 2}
 --- !u!54 &6660568313519924058
 Rigidbody:
