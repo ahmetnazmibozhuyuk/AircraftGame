@@ -42,4 +42,4 @@ landing zone assets were given by Brat Games. Objective arrow and checkpoint mes
 are drawn in Blender by me.
 
 The link for android apk build:
-https://drive.google.com/file/d/1jM7mdmIl2F-az5Oo7eMjKni-BgHyFgcN/view?usp=sharing
+https://drive.google.com/file/d/1PjM6QzySWqBBR-EVwi9cYl-wSFs66OFb/view?usp=sharing
